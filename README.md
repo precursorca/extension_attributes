@@ -34,6 +34,18 @@ Here is an example cache file:
 </plist>
 ```
 
+Widget Configuration
+-------------
+
+#### ATTRIBUTES_TO_TRACK
+
+Attributes Widget
+
+List of extension attributes, by attribute name, that you want to see in the extension attributes report. If this is not set the report page will appear empty. This is case insensitive but must be an array.
+
+```bash
+ATTRIBUTES_TO_TRACK ='Attribute Name 1, Attribute Name 2'
+```
 
 
 Table Schema

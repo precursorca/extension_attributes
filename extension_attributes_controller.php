@@ -7,14 +7,14 @@
  **/
 class Extension_attributes_controller extends Module_controller
 {
-    
+
     /*** Protect methods with auth! ****/
     public function __construct()
     {
         // Store module path
         $this->module_path = dirname(__FILE__);
     }
-    
+
     /**
     * Default method
     *
@@ -24,7 +24,43 @@ class Extension_attributes_controller extends Module_controller
     {
         echo "You've loaded the extension_attributes module!";
     }
-    
+
+    /**
+    * Get attribute data for widget
+    *
+    * @param string $attribute
+    **/
+    public function attributesWidget($attribute = '')
+    {
+        // Protect this handler
+        if (! $this->authorized()) {
+            redirect('auth/login');
+        }
+        $attribute = rawurldecode($attribute);
+
+        // Detect wildcard character
+        if (preg_match('/[_%]/', $attribute)) {
+            $comparator = 'like';
+        } else {
+            $comparator = '=';
+        }
+
+        // Remove non-attribute characters
+        $attribute = preg_replace("/[^A-Za-z0-9_\-]]/", '', $attribute);
+
+        $sql = "SELECT COUNT(*) AS count, result 
+                    FROM extension_attributes
+                    LEFT JOIN reportdata USING (serial_number)
+                    ".get_machine_group_filter()."
+                    AND displayname $comparator '$attribute'
+                    GROUP BY result
+                    ORDER BY result DESC";
+
+        $obj = new View();
+        $queryobj = new Extension_attributes_model();
+        $obj->view('json', array('msg' => current(array('msg' => $queryobj->query($sql)))));
+    }
+
     /**
     * Retrieve data in json format
     *
@@ -41,9 +77,8 @@ class Extension_attributes_controller extends Module_controller
         $sql = "SELECT displayname, result
                     FROM extension_attributes 
                     WHERE serial_number = '$serial_number'";
-        
+
         $queryobj = new Extension_attributes_model();
-        $extension_attributes_tab = $queryobj->query($sql);
-        $obj->view('json', array('msg' => current(array('msg' => $extension_attributes_tab)))); 
+        $obj->view('json', array('msg' => current(array('msg' => $queryobj->query($sql)))));
     }
 } // END class Extension_attributes_controller

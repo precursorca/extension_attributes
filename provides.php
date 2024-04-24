@@ -7,4 +7,10 @@ return array(
     'listings' => array(
         'extension_attributes' => array('view' => 'extension_attributes_listing', 'i18n' => 'extension_attributes.extension_attributes'),
     ),
+    'reports' => array(
+        'extension_attributes' => array('view' => 'extension_attributes_report', 'i18n' => 'extension_attributes.report')
+    ),
+    'widgets' => array(
+        'extension_attributes' => array('view' => 'extension_attributes_widget'),
+    ),
 );

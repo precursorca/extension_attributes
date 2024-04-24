@@ -28,8 +28,8 @@ class Extension_attributes_model extends \Model
         // If data is empty, echo out error
         if (! $data) {
             echo ("Error Processing extension attributes: No data found");
-        } else { 
-            
+        } else {
+
             // Delete previous entries
             $this->deleteWhere('serial_number=?', $this->serial_number);
 
@@ -37,7 +37,7 @@ class Extension_attributes_model extends \Model
             $parser = new CFPropertyList();
             $parser->parse($data, CFPropertyList::FORMAT_XML);
             $plist = $parser->toArray();
-            
+
             // Process each extension attribute
             foreach ($plist as $single_ae) {
                 foreach (array('displayname', 'result', 'displayincategory', 'datatype') as $item) {
@@ -49,7 +49,7 @@ class Extension_attributes_model extends \Model
                         $this->$item = $single_ae[$item];
                     }
                 }
-                
+
             // Save the data, wash your hands
             $this->id = '';
             $this->save(); 
