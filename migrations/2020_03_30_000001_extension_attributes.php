@@ -22,7 +22,7 @@ class Extensionattributes extends Migration
             $table->index('datatype');
         });
     }
-    
+
     public function down()
     {
         $capsule = new Capsule();

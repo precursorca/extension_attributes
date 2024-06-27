@@ -63,13 +63,20 @@ $(document).on('appReady', function(){
                 });
 
                 $.each(data, function(j, d){
-                    attribute.list.append($('<a>')
-                        .addClass('list-group-item')
-                        .attr('href', appUrl + '/show/listing/extension_attributes/extension_attributes/#' + attribute.name)
-                        .text(d.result)
-                        .append($('<span>')
-                            .addClass('badge pull-right')
-                            .text(d.count)));
+                    // Check if we have data for the attribute
+                    if (d.result){
+                        attribute.list.append($('<a>')
+                            .addClass('list-group-item')
+                            .attr('href', appUrl + '/show/listing/extension_attributes/extension_attributes/#' + attribute.name)
+                            .text(d.result)
+                            .append($('<span>')
+                                .addClass('badge pull-right')
+                                .text(d.count)));
+                    } else {
+                        attribute.list.append($('<a>')
+                            .addClass('list-group-item')
+                            .text('No Data'));
+                    }
                 });
             });
         });
